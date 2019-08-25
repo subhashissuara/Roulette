@@ -49,7 +49,7 @@ int main(){
 
 	srand(time(NULL));
 	while(flag){
-		bool check; // To skip lost plaayers
+		bool check; // To skip lost players
 		bool win = false;
 		for(int i = 1; i <= size; i++){
 			for(int j = 0; j < 10; j++){
