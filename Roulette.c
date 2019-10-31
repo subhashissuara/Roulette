@@ -1,10 +1,10 @@
 /*
 	Made by Subhashis Suara
 */
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
 
 /*
 	38 squares
@@ -13,11 +13,11 @@
 	18 - black - randomly ordered
 */
 
-bool flag = true; // Keep track of while loop exit condition
-bool green; // To keep track of green squares
-int result_num = 0; // Number rolled by rand()
+bool flag = true;		 // Keep track of while loop exit condition
+bool green;				 // To keep track of green squares
+int result_num = 0;		 // Number rolled by rand()
 float winningAmount = 0; // Stores the winning amount for each bet
-int lostPlayers[10]; // Keep track of lost players and avoid them from playing
+int lostPlayers[10];	 // Keep track of lost players and avoid them from playing
 int lostplayers_cnt = 0; // To keep track of index of lostPlayers array
 
 // slno is serial number of player
@@ -25,13 +25,14 @@ int choose(float players[], int slno);
 int single(float players[], int slno, float bet);
 int redorblack(float players[], int slno, float bet);
 int oddoreven(float players[], int slno, float bet);
-int lowerorhigher(float players[], int slno, float bet); 
+int lowerorhigher(float players[], int slno, float bet);
 int randfor38();
-bool randfor2(); 
+bool randfor2();
 // output when the square choosen is green
 int displayGreen(int slno);
 
-int main(){
+int main()
+{
 	bool last = false;
 	int size = 0;
 	float startMoney = 0;
@@ -41,57 +42,67 @@ int main(){
 	scanf("%f", &startMoney);
 	float players[size];
 
-	for(int cnt = 0; cnt < size; cnt++){
+	for (int cnt = 0; cnt < size; cnt++)
+	{
 		players[cnt] = startMoney;
 	}
 
 	printf("\nAll players have been give %f$ to start with! \n", startMoney);
 
 	srand(time(NULL));
-	while(flag){
-		bool check; // To skip lost plaayers
+	while (flag)
+	{
+		bool check; // To skip lost players
 		bool win = false;
-		for(int i = 1; i <= size; i++){
-			for(int j = 0; j < 10; j++){
-				if(i == lostPlayers[j]){
+		for (int i = 1; i <= size; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				if (i == lostPlayers[j])
+				{
 					check = true;
-					if((size - lostplayers_cnt) == 1)
+					if ((size - lostplayers_cnt) == 1)
 						win = true;
-					if((size - lostplayers_cnt) == 0){
+					if ((size - lostplayers_cnt) == 0)
+					{
 						printf("All players are out from the game! No one won!\n");
 						flag = false;
 					}
-				if(check)
-					break;
+					if (check)
+						break;
 				}
 				else
 					check = false;
 			}
-			if(win){
-				for(int i = 1; i <= size; i++){
+			if (win)
+			{
+				for (int i = 1; i <= size; i++)
+				{
 					last = true;
-					for(int j = 0; j < 10; j++){
-						if(i == lostPlayers[j]){
+					for (int j = 0; j < 10; j++)
+					{
+						if (i == lostPlayers[j])
+						{
 							last = false;
 							break;
 						}
 					}
-					if(last){
+					if (last)
+					{
 						printf("\nPlayer %d won the game as all other players have been eliminated!\n", i);
 						flag = false;
 						break;
 					}
 				}
-				
 			}
 			else
 			{
-				if(check)
+				if (check)
 					continue;
 				else
 					choose(players, i - 1);
 			}
-			if(last || check)
+			if (last || check)
 				break;
 		}
 	}
@@ -99,7 +110,8 @@ int main(){
 }
 
 // Menu for choosing the bet
-int choose(float players[], int slno){
+int choose(float players[], int slno)
+{
 	int choice = 0;
 	float bet = 0;
 	printf("\nChoose your bet player %d: \n", slno + 1);
@@ -112,13 +124,15 @@ int choose(float players[], int slno){
 
 	printf("Enter the amount of bet: \n");
 	scanf("%f", &bet);
-	if(bet > players[slno]){
+	if (bet > players[slno])
+	{
 		printf("\nYou bet more than your balance!\n");
 		bet = 0;
 		choice = 0;
 		choose(players, slno);
 	}
-	else if(bet < 0){
+	else if (bet < 0)
+	{
 		printf("\nYou bet in negetive numbers!\n");
 		bet = 0;
 		choice = 0;
@@ -143,7 +157,7 @@ int choose(float players[], int slno){
 		case 4:
 			lowerorhigher(players, slno, bet);
 			break;
-		
+
 		default:
 			printf("Invalid choice!\n");
 			choose(players, slno);
@@ -156,9 +170,10 @@ int choose(float players[], int slno){
 	1 - Won
 	2 - Lost
 */
-bool randfor2(){
+bool randfor2()
+{
 	int chosen = ((rand()) % (2 - 1 + 1) + 1);
-	if(chosen == 1)
+	if (chosen == 1)
 		return true;
 	else
 		return false;
@@ -169,21 +184,24 @@ bool randfor2(){
 	37 - 0 - green - Lost
 	38 - 00 - green - Lost
 */
-int randfor38(){
+int randfor38()
+{
 	int chosen = ((rand()) % (38 - 1 + 1) + 1);
-	return chosen;		
+	return chosen;
 }
 
-int displayGreen(int slno){
+int displayGreen(int slno)
+{
 	printf("\nThe color rolled was green!\n");
 	lostPlayers[lostplayers_cnt] = slno + 1;
 	lostplayers_cnt++;
 	printf("Player %d is out from the game!\n", slno + 1);
 }
 
-int single(float players[], int slno, float bet){
+int single(float players[], int slno, float bet)
+{
 	int choice = 0;
-	winningAmount = bet + 35*bet;
+	winningAmount = bet + 35 * bet;
 	result_num = randfor38();
 	printf("\nEnter a number between 1 - 36 to bet on:\n");
 	scanf("%d", &choice);
@@ -194,8 +212,9 @@ int single(float players[], int slno, float bet){
 		choice = 0;
 		single(players, slno, bet);
 	}
-	
-	if(result_num > 36){
+
+	if (result_num > 36)
+	{
 		green = true;
 		displayGreen(slno);
 		return 0;
@@ -209,9 +228,8 @@ int single(float players[], int slno, float bet){
 		printf("Winning amount: %f$\n", winningAmount);
 		players[slno] += winningAmount;
 		printf("Total balance: %f$\n", players[slno]);
-		
 	}
-	
+
 	else
 	{
 		printf("\nPlayer %d lost the bet!\n", slno + 1);
@@ -220,19 +238,20 @@ int single(float players[], int slno, float bet){
 		printf("Losing amount: %f$\n", bet);
 		players[slno] -= bet;
 		printf("Total balance: %f$\n", players[slno]);
-		if(players[slno] <= 0){
+		if (players[slno] <= 0)
+		{
 			printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
 			lostPlayers[lostplayers_cnt] = slno + 1;
 			lostplayers_cnt++;
 			printf("Player %d is out from the game!\n", slno + 1);
 		}
 	}
-	
 }
 
-int redorblack(float players[], int slno, float bet){
+int redorblack(float players[], int slno, float bet)
+{
 	int choice = 0;
-	winningAmount = bet*2;
+	winningAmount = bet * 2;
 	printf("\nChoose your bet: \n");
 	printf("1. Red \n");
 	printf("2. Black \n");
@@ -246,32 +265,36 @@ int redorblack(float players[], int slno, float bet){
 		redorblack(players, slno, bet);
 	}
 
-	if(result_num > 36){
+	if (result_num > 36)
+	{
 		green = true;
 		displayGreen(slno);
 		return 0;
 	}
 
-	if(choice == 1){
+	if (choice == 1)
+	{
 		char choice_text_1[] = "black";
-		if (randfor2()){
-		printf("\nPlayer %d won the bet!\n", slno + 1);
-		printf("Initial amount: %f$\n", players[slno]);
-		printf("Bet amount: %f$\n", bet);
-		printf("Winning amount: %f$\n", winningAmount);
-		players[slno] += winningAmount;
-		printf("Total balance: %f$\n", players[slno]);
-		
+		if (randfor2())
+		{
+			printf("\nPlayer %d won the bet!\n", slno + 1);
+			printf("Initial amount: %f$\n", players[slno]);
+			printf("Bet amount: %f$\n", bet);
+			printf("Winning amount: %f$\n", winningAmount);
+			players[slno] += winningAmount;
+			printf("Total balance: %f$\n", players[slno]);
 		}
-	
-		else{
+
+		else
+		{
 			printf("\nPlayer %d lost the bet!\n", slno + 1);
 			printf("The color rolled was %s!\n", choice_text_1);
 			printf("Initial amount: %f$\n", players[slno]);
 			printf("Losing amount: %f$\n", bet);
 			players[slno] -= bet;
 			printf("Total balance: %f$\n", players[slno]);
-			if(players[slno] <= 0){
+			if (players[slno] <= 0)
+			{
 				printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
 				lostPlayers[lostplayers_cnt] = slno + 1;
 				lostplayers_cnt++;
@@ -279,41 +302,43 @@ int redorblack(float players[], int slno, float bet){
 			}
 		}
 	}
-	else{
+	else
+	{
 		char choice_text_2[] = "red";
 
 		if (randfor2())
 		{
-		printf("\nPlayer %d won the bet!\n", slno + 1);
-		printf("Initial amount: %f$\n", players[slno]);
-		printf("Bet amount: %f$\n", bet);
-		printf("Winning amount: %f$\n", winningAmount);
-		players[slno] += winningAmount;
-		printf("Total balance: %f$\n", players[slno]);
-		
+			printf("\nPlayer %d won the bet!\n", slno + 1);
+			printf("Initial amount: %f$\n", players[slno]);
+			printf("Bet amount: %f$\n", bet);
+			printf("Winning amount: %f$\n", winningAmount);
+			players[slno] += winningAmount;
+			printf("Total balance: %f$\n", players[slno]);
 		}
-	
-	else
+
+		else
 		{
-		printf("\nPlayer %d lost the bet!\n", slno + 1);
-		printf("The color rolled was %s!\n", choice_text_2);
-		printf("Initial amount: %f$\n", players[slno]);
-		printf("Losing amount: %f$\n", bet);
-		players[slno] -= bet;
-		printf("Total balance: %f$\n", players[slno]);
-		if(players[slno] <= 0){
-			printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
-			lostPlayers[lostplayers_cnt] = slno + 1;
-			lostplayers_cnt++;
-			printf("Player %d is out from the game!\n", slno + 1);
+			printf("\nPlayer %d lost the bet!\n", slno + 1);
+			printf("The color rolled was %s!\n", choice_text_2);
+			printf("Initial amount: %f$\n", players[slno]);
+			printf("Losing amount: %f$\n", bet);
+			players[slno] -= bet;
+			printf("Total balance: %f$\n", players[slno]);
+			if (players[slno] <= 0)
+			{
+				printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
+				lostPlayers[lostplayers_cnt] = slno + 1;
+				lostplayers_cnt++;
+				printf("Player %d is out from the game!\n", slno + 1);
 			}
 		}
 	}
 }
 
-int oddoreven(float players[], int slno, float bet){
+int oddoreven(float players[], int slno, float bet)
+{
 	int choice = 0;
-	winningAmount = bet*2;
+	winningAmount = bet * 2;
 	result_num = randfor38();
 	printf("\nChoose your bet: \n");
 	printf("1. Odd \n");
@@ -328,16 +353,17 @@ int oddoreven(float players[], int slno, float bet){
 		oddoreven(players, slno, bet);
 	}
 
-	if(result_num > 36){
+	if (result_num > 36)
+	{
 		green = true;
 		displayGreen(slno);
 		return 0;
 	}
 
-	if(choice == 2)
+	if (choice == 2)
 		choice = 0;
 
-	if (result_num%2 == choice)
+	if (result_num % 2 == choice)
 	{
 		printf("\nPlayer %d won the bet!\n", slno + 1);
 		printf("Initial amount: %f$\n", players[slno]);
@@ -345,9 +371,8 @@ int oddoreven(float players[], int slno, float bet){
 		printf("Winning amount: %f$\n", winningAmount);
 		players[slno] += winningAmount;
 		printf("Total balance: %f$\n", players[slno]);
-		
 	}
-	
+
 	else
 	{
 		printf("\nPlayer %d lost the bet!\n", slno + 1);
@@ -356,7 +381,8 @@ int oddoreven(float players[], int slno, float bet){
 		printf("Losing amount: %f$\n", bet);
 		players[slno] -= bet;
 		printf("Total balance: %f$\n", players[slno]);
-		if(players[slno] <= 0){
+		if (players[slno] <= 0)
+		{
 			printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
 			lostPlayers[lostplayers_cnt] = slno + 1;
 			lostplayers_cnt++;
@@ -365,9 +391,10 @@ int oddoreven(float players[], int slno, float bet){
 	}
 }
 
-int lowerorhigher(float players[], int slno, float bet){
+int lowerorhigher(float players[], int slno, float bet)
+{
 	int choice = 0;
-	winningAmount = bet*2;
+	winningAmount = bet * 2;
 	result_num = randfor38();
 	printf("\nChoose your bet: \n");
 	printf("1. Number lower than 18 \n");
@@ -382,69 +409,74 @@ int lowerorhigher(float players[], int slno, float bet){
 		lowerorhigher(players, slno, bet);
 	}
 
-	if(result_num > 36){
+	if (result_num > 36)
+	{
 		green = true;
 		displayGreen(slno);
 		return 0;
 	}
 
-	if(choice == 1){
+	if (choice == 1)
+	{
 		char choice_text_1[] = "higher than 18";
 
-		if (result_num < 18){
-		printf("\nPlayer %d won the bet!\n", slno + 1);
-		printf("Initial amount: %f$\n", players[slno]);
-		printf("Bet amount: %f$\n", bet);
-		printf("Winning amount: %f$\n", winningAmount);
-		players[slno] += winningAmount;
-		printf("Total balance: %f$\n", players[slno]);
-		
+		if (result_num < 18)
+		{
+			printf("\nPlayer %d won the bet!\n", slno + 1);
+			printf("Initial amount: %f$\n", players[slno]);
+			printf("Bet amount: %f$\n", bet);
+			printf("Winning amount: %f$\n", winningAmount);
+			players[slno] += winningAmount;
+			printf("Total balance: %f$\n", players[slno]);
 		}
-	
-		else{
+
+		else
+		{
 			printf("\nPlayer %d lost the bet!\n", slno + 1);
 			printf("The number rolled was %d which is %s!\n", result_num, choice_text_1);
 			printf("Initial amount: %f$\n", players[slno]);
 			printf("Losing amount: %f$\n", bet);
 			players[slno] -= bet;
 			printf("Total balance: %f$\n", players[slno]);
-			if(players[slno] <= 0){
+			if (players[slno] <= 0)
+			{
 				printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
 				lostPlayers[lostplayers_cnt] = slno + 1;
 				lostplayers_cnt++;
 				printf("Player %d is out from the game!\n", slno + 1);
-				}
-			
 			}
+		}
 	}
-		
-	else{
+
+	else
+	{
 		char choice_text_2[] = "lower than 18";
 
-		if (result_num > 18){
-		printf("\nPlayer %d won the bet!\n", slno + 1);
-		printf("Initial amount: %f$\n", players[slno]);
-		printf("Bet amount: %f$\n", bet);
-		printf("Winning amount: %f$\n", winningAmount);
-		players[slno] += winningAmount;
-		printf("Total balance: %f$\n", players[slno]);
-		
+		if (result_num > 18)
+		{
+			printf("\nPlayer %d won the bet!\n", slno + 1);
+			printf("Initial amount: %f$\n", players[slno]);
+			printf("Bet amount: %f$\n", bet);
+			printf("Winning amount: %f$\n", winningAmount);
+			players[slno] += winningAmount;
+			printf("Total balance: %f$\n", players[slno]);
 		}
-	
-		else{
+
+		else
+		{
 			printf("\nPlayer %d lost the bet!\n", slno + 1);
 			printf("The number rolled was %d which is %s!\n", result_num, choice_text_2);
 			printf("Initial amount: %f$\n", players[slno]);
 			printf("Losing amount: %f$\n", bet);
 			players[slno] -= bet;
 			printf("Total balance: %f$\n", players[slno]);
-			if(players[slno] <= 0){
+			if (players[slno] <= 0)
+			{
 				printf("\nPlayer %d has gone bankrupt!\n", slno + 1);
 				lostPlayers[lostplayers_cnt] = slno + 1;
 				lostplayers_cnt++;
 				printf("Player %d is out from the game!\n", slno + 1);
-				}
-			
 			}
+		}
 	}
 }
